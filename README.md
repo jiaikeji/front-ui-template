@@ -1,4 +1,4 @@
-# EGGO-UI
+# Front-UI
 
 #### 开发文档
 基于el-admin，相关文档 [https://el-admin.vip](https://el-admin.vip)
