@@ -31,8 +31,6 @@
 	SvgIcon 图标
 	弹窗组件 可选UI，默认ElementUI
 	组件模块的引入必须使用绝对路径(例如：@/components/xxx)
-	金额比例反推
-	步骤条
 	FormTip 提示 
 	FormSubLabel 表单对象分割符，全局可用
 #### 字典使用
