@@ -1,0 +1,383 @@
+{{#if template}}
+<template>
+  <div>
+    <el-form
+      ref="showform"
+      :model="form"
+      label-position="{{formsetting.labelPosition}}"
+      label-width="{{formsetting.labelwidth}}px"
+      size="{{formsetting.formsize}}"
+    >
+      <el-row :gutter="10">
+      {{#each forms as |item|}}
+        <el-col :span="{{col}}">
+          {{#ifCond type '==' 'p' }}
+          <p style="text-align: {{contentposition}};font-size: {{fontsize}}px;color: {{textcolor}};">{{ text }}</p>
+          {{/ifCond}}
+          {{#ifCond type '==' 'TableForm' }}
+          <showTableForm ref="{{id}}" :form="form" :data="item" @settabledata="settabledata" />
+          {{/ifCond}}
+          {{#ifCond type '==' 'Divider' }}
+          <el-divider content-position="{{contentposition}}">{{ text }}</el-divider>
+          {{/ifCond}}
+          {{#ifNoExistShowForm type}}
+          {{#ifCond type '==' 'Input' }}
+          <el-input
+            v-model="form['{{item.key}}']"
+            :show-word-limit="{{item.showwordlimit}}"
+            :minlength="{{item.minlength}}"
+            :maxlength="{{item.maxlength}}"
+            :clearable="{{item.clearable}}"
+            :show-password="{{item.showpassword}}"
+            :disabled="{{item.disabled}}"
+            placeholder="{{item.placeholder}}"
+            prefix-icon="{{item.prefixicon}}"
+            suffix-icon="{{item.suffixicon}}"
+            style="width:100%"
+          >
+            {{#ifCond item.prepend}}
+            <template slot="prepend">{{item.prepend}}</template>
+            {{/ifCond}}
+            {{#ifCond item.append}}
+            <template slot="append">{{item.append}}</template>
+            {{/ifCond}}
+          </el-input>
+          {{/ifCond}}
+          {{#ifCond type '==' 'Textarea' }}
+          <el-input
+            style="width:100%"
+            type="textarea"
+            v-model="form['{{item.key}}']"
+            :rows="{{item.rows}}"
+            :show-word-limit="{{item.showwordlimit}}"
+            :minlength="{{item.minlength}}"
+            :maxlength="{{item.maxlength}}"
+            :clearable="{{item.clearable}}"
+            :disabled="{{item.disabled}}"
+            placeholder="{{item.placeholder}}"
+          />
+          {{/ifCond}}
+          {{#ifCond type '==' 'InputNumber' }}
+          <el-input-number
+            v-model="form['{{item.key}}']"
+            :min="{{item.min}}"
+            :max="{{item.max}}"
+            :step="{{item.step}}"
+            :step-strictly="{{item.stepstrictly}}"
+            :precision="{{item.precision}}"
+            :disabled="{{item.disabled}}"
+            :controls-position="{{item.controlsposition}}"
+            placeholder="{{item.placeholder}}"
+            style="width:100%"
+          />
+          {{/ifCond}}
+          {{#ifCond type '==' 'Switch' }}
+          <el-switch
+            v-model="form['{{item.key}}']"
+            :disabled="{{item.disabled}}"
+            active-text="{{item.activetext}}"
+            inactive-text="{{item.inactivetext}}"
+            active-color="{{item.activecolor}}"
+            inactive-color="{{item.inactivecolor}}"
+            style="width:100%"
+          />
+          {{/ifCond}}
+          {{#ifCond type '==' 'Slider' }}
+          <el-slider
+            v-model="form['{{item.key}}']"
+            :show-stops="{{item.showstops}}"
+            :show-input="{{item.showinput}}"
+            :range="{{item.range}}"
+            :disabled="{{item.disabled}}"
+            :min="{{item.min}}"
+            :max="{{item.max}}"
+            :step="{{item.step}}"
+            style="width:100%"
+          />
+          {{/ifCond}}
+          {{#ifCond type '==' 'Select' }}
+          <el-select
+            v-model="form['{{item.key}}']"
+            :multiple="{{item.multiple}}"
+            :disabled="{{item.disabled}}"
+            :clearable="{{item.clearable}}"
+            :filterable="{{item.filterable}}"
+            :allow-create="{{item.allowcreate}}"
+            placeholder="{{item.placeholder}}"
+            style="width:100%"
+            collapse-tags
+          >
+           {{#each item.option as |optionVal|}}
+            <el-option
+              label="{{optionVal.label}}"
+              value="{{optionVal.value}}"
+            >
+              <span style="float: left">{{ optionVal.label }}</span>
+            </el-option>
+           {{/each}}
+          </el-select>
+          {{/ifCond}}
+          {{#ifCond type '==' 'Timeselect' }}
+          <el-time-select
+            v-model="form['{{item.key}}']"
+            :picker-options="{{item.pickeroptions}}"
+            :disabled="{{item.disabled}}"
+            prefix-icon="{{item.prefixicon}}"
+            placeholder="{{item.placeholder}}"
+            clearable="{{item.clearable}}"
+            value-format="HH:mm:ss"
+            style="width:100%"
+          />
+          {{/ifCond}}
+          {{#ifCond type '==' 'Timepicker' }}
+          <el-time-picker
+            v-model="form['{{item.key}}']"
+            :is-range="{{item.isrange}}"
+            :disabled="{{item.disabled}}"
+            :clearable="{{item.clearable}}"
+            prefix-icon="{{item.prefixicon}}"
+            start-placeholder="{{item.startplaceholder}}"
+            end-placeholder="{{item.endplaceholder}}"
+            range-separator="{{item.rangeseparator}}"
+            placeholder="{{item.placeholder}}"
+            value-format="HH:mm:ss"
+            style="width:100%"
+          />
+          {{/ifCond}}
+          {{#ifCond type '==' 'DatePicker' }}
+            {{#ifDateTypeIsDate item.type}}
+          <el-date-picker
+            v-model="form['{{item.key}}']"
+            :type="{{item.datetype}}"
+            :disabled="{{item.disabled}}"
+            prefix-icon="{{item.prefixicon}}"
+            start-placeholder="{{item.startplaceholder}}"
+            end-placeholder="{{item.endplaceholder}}"
+            range-separator="{{item.rangeseparator}}"
+            placeholder="{{item.placeholder}}"
+            clearable="{{item.clearable}}"
+            value-format="yyyy-MM-dd"
+            style="width:100%"
+          />
+            {{/ifDateTypeIsDate}}
+            {{#ifDateTypeIsWeek item.type}}
+          <el-date-picker
+            v-model="form['{{item.key}}']"
+            :disabled="{{item.disabled}}"
+            prefix-icon="{{item.prefixicon}}"
+            start-placeholder="{{item.startplaceholder}}"
+            end-placeholder="{{item.endplaceholder}}"
+            range-separator="{{item.rangeseparator}}"
+            type="week"
+            format="yyyy 第 WW 周"
+            value-format="yyyy-MM-dd"
+            placeholder="{{item.placeholder}}"
+            clearable="{{item.clearable}}"
+            style="width:100%"
+          />
+            {{/ifDateTypeIsWeek}}
+            {{#ifDateTypeIsMonth item.type}}
+          <el-date-picker
+            v-model="form['{{item.key}}']"
+            :type="{{item.datetype}}"
+            :disabled="{{item.disabled}}"
+            prefix-icon="{{item.prefixicon}}"
+            start-placeholder="{{item.startplaceholder}}"
+            end-placeholder="{{item.endplaceholder}}"
+            range-separator="{{item.rangeseparator}}"
+            placeholder="{{item.placeholder}}"
+            clearable="{{item.clearable}}"
+            value-format="yyyy-MM"
+            style="width:100%"
+          />
+            {{/ifDateTypeIsMonth}}
+            {{#ifDateTypeIsYear item.type}}
+          <el-date-picker
+            v-model="form['{{item.key}}']"
+            :disabled="{{item.disabled}}"
+            prefix-icon="{{item.prefixicon}}"
+            start-placeholder="{{item.startplaceholder}}"
+            end-placeholder="{{item.endplaceholder}}"
+            range-separator="{{item.rangeseparator}}"
+            type="year"
+            placeholder="{{item.placeholder}}"
+            clearable="{{item.clearable}}"
+            value-format="yyyy"
+            style="width:100%"
+          />
+            {{/ifDateTypeIsYear}}
+            {{#ifDateTypeIsDateTime item.type}}
+          <el-date-picker
+            v-model="form['{{item.key}}']"
+            :type="{{item.datetype}}"
+            :disabled="{{item.disabled}}"
+            prefix-icon="{{item.prefixicon}}"
+            start-placeholder="{{item.startplaceholder}}"
+            end-placeholder="{{item.endplaceholder}}"
+            range-separator="{{item.rangeseparator}}"
+            placeholder="{{item.placeholder}}"
+            clearable="{{item.clearable}}"
+            value-format="yyyy-MM-dd HH:mm:ss"
+            style="width:100%"
+          />
+            {{/ifDateTypeIsDateTime}}
+          {{/ifCond}}
+          {{#ifCond type '==' 'Radio' }}
+          <el-radio-group
+            v-model="form['{{item.key}}']"
+            :disabled="{{item.disabled}}"
+            style="width:100%"
+          >
+            <div>
+            {{#ifCond item.radiotype '==' 'yuan' }}
+              {{#each item.option as |optionVal|}}
+              <el-radio label="{{optionVal.value}}">{{optionVal.label}}</el-radio>
+              {{/each}}
+            {{/ifCond}}
+            {{#ifCond item.radiotype '==' 'button' }}
+              {{#each item.option as |optionVal|}}
+              <el-radio-button label="{{optionVal.value}}">{{optionVal.label}}</el-radio-button>
+              {{/each}}
+            {{/ifCond}}
+            </div>
+          </el-radio-group>
+          {{/ifCond}}
+          {{#ifCond type '==' 'Checkbox' }}
+          <el-checkbox-group
+            v-model="form['{{item.key}}']"
+            :border="{{item.border}}"
+            :disabled="{{item.disabled}}"
+            :min="{{item.min}}"
+            :max="{{item.max}}"
+            style="width:100%"
+          >
+            <div>
+            {{#ifCond item.checkboxtype '==' 'fang' }}
+              {{#each item.option as |optionVal|}}
+              <el-checkbox label="{{optionVal.value}}">{{optionVal.label}}</el-checkbox>
+              {{/each}}
+            {{/ifCond}}
+            {{#ifCond item.checkboxtype '==' 'button' }}
+              {{#each item.option as |optionVal|}}
+              <el-checkbox label="{{optionVal.value}}">{{optionVal.label}}</el-checkbox>
+              <el-checkbox-button label="{{optionVal.value}}">{{optionVal.label}}</el-checkbox-button>
+              {{/each}}
+            {{/ifCond}}
+            </div>
+          </el-checkbox-group>
+          {{/ifCond}}
+          {{/ifNoExistShowForm}}
+        </el-col>
+      {{/each}}
+        <el-col :span="24">
+          <el-form-item>
+            <el-button type="primary" @click="submitForm('showform')">确定</el-button>
+          </el-form-item>
+        </el-col>
+      </el-row>
+    </el-form>
+  </div>
+</template>
+{{/if}}
+
+{{#if script}}
+<script>
+// 初始化form
+// 1 下拉框多选时为 数组
+// 2 开关进入之后 默认 false
+// 3 滑块范围选择时为数组
+// 4 多选 需要初始化为 数组
+import Formitem from '@/components/ElFormDesign/formitem'
+import showTableForm from '@/components/ElFormDesign/showTableForm'
+export default {
+  name: '{{ properCase name }}',
+  components: {
+    Formitem,
+    showTableForm
+  },
+  props: {
+    data: {
+      type: Object,
+      default: () => {
+        return {
+          formsetting: {
+            labelPosition: 'left',
+            labelwidth: 80,
+            formsize: 'mini'
+          },
+          forms: []
+        }
+      }
+    },
+    defaultData: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    }
+  },
+  data() {
+    return {
+      formkey: 'formkey',
+      form: {}
+    }
+  },
+  watch: {
+    data: {
+      handler() {
+        this.formkey = 'formkey' + new Date().getTime()
+      },
+      deep: true
+    }
+  },
+  created() {
+    this.initform()
+  },
+  methods: {
+    initform() {
+      const obj = this.defaultData
+      this.data.forms.map(item => {
+        if (item.type === 'Checkbox') {
+          obj[item.key] = []
+        }
+      })
+      this.form = obj
+    },
+    // 设置table 的数据
+    settabledata(data) {
+      this.form[data.field] = data.data
+    },
+    submitForm(formName) {
+      let pd = true
+      // 调用表格的提交按钮
+      for (const k in this.$refs) {
+        if (k !== 'showform') {
+          const pdt = this.$refs[k][0].submitForm('dynamicValidateForm')
+          if (!pdt) {
+            pd = false
+          }
+        }
+      }
+      // 当前表单的校验
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          if (pd) {
+            this.$emit('save', this.form)
+          }
+        } else {
+          console.log('error submit!!')
+          this.$emit('save', false)
+          return false
+        }
+      })
+    }
+  }
+}
+</script>
+{{/if}}
+
+{{#if style}}
+<style lang="scss" scoped>
+
+</style>
+{{/if}}
